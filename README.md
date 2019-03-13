@@ -1,2 +1,2 @@
 # android-samples
-Basic samples using android libs or specific features.
+Basic examples using android libs or specific features.
