@@ -6,8 +6,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_exemplo_basico"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_place_black_24dp"
             android:title="Exemplo Básico" />
+
+        <item
+            android:id="@+id/nav_exemplo_providerv1"
+            android:icon="@drawable/ic_gps_fixed_black_24dp"
+            android:title="Exemplo Provider V1" />
+
+        <item
+            android:id="@+id/nav_exemplo_providerv2GPS"
+            android:icon="@drawable/ic_gps_fixed_black_24dp"
+            android:title="Exemplo Provider V2 GPS" />
     </group>
 
 

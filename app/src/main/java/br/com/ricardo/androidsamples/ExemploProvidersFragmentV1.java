@@ -1,6 +1,13 @@
 package br.com.ricardo.androidsamples;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,9 +17,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class ExemploProvidersFragmentV1 extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private GoogleMap mMap;
+    private LocationManager locationManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,9 +40,35 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+//        mMap.setMyLocationEnabled(true);
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        //Na classe Criteria, você pode buscar o melhor tipo de provedor pra gerar o acesso a sua localização (GPS ou WIFI)
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Toast.makeText(getActivity(), "Provider: " + provider, Toast.LENGTH_SHORT).show();
+
+
+
+        //Checando se o device tem permissão pra acessar o GPS
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION }, 0);
+        }
+
+
 
         // Coordenadas para a cidade de Sydney
         LatLng sydney = new LatLng(-23.537911, -46.828770);

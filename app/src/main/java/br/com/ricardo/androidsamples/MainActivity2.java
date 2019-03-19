@@ -83,11 +83,20 @@ public class MainActivity2 extends AppCompatActivity
 
         if (id == R.id.nav_exemplo_basico) {
 
-            fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.add(R.id.map, new MapsFragment());
+            ft.replace(R.id.map, new MapsFragment());
             ft.commit();
 
+        } else if(id == R.id.nav_exemplo_providerv1){
+
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.map, new ExemploProvidersFragmentV1());
+            ft.commit();
+        } else if(id == R.id.nav_exemplo_providerv2GPS) {
+
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.map, new ExemploProvidersFragmentV2GPS());
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
