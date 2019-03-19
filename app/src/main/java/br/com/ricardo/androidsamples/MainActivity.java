@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 
-public class MainActivity extends AppCompatActivity implements FragmentA.Comunicador {
+public class MainActivity extends AppCompatActivity implements Comunicador {
 
     private TextView textResultado;
 
@@ -16,9 +16,7 @@ public class MainActivity extends AppCompatActivity implements FragmentA.Comunic
         setContentView(R.layout.activity_main);
 
         FragmentManager fm = getSupportFragmentManager();
-
         FragmentTransaction ft = fm.beginTransaction();
-
         ft.add(R.id.container_fragment_1, new FragmentA());
         ft.commit();
 

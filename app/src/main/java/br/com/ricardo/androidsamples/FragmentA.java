@@ -40,10 +40,6 @@ public class FragmentA extends Fragment {
 
     }
 
-    public interface Comunicador{
-        public void insereTexto(String texto);
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
