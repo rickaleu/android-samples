@@ -47,7 +47,7 @@ public class Form extends AppCompatActivity {
 //                editor.putString("email", editEmail.getText().toString());
 //                editor.apply();
 
-                Toast.makeText(Form.this, "Dados gravados com sucesso", Toast.LENGTH_LONG).show();
+                Toast.makeText(Form.this, "Dados gravados com sucesso", Toast.LENGTH_SHORT).show();
 
             }
         });
