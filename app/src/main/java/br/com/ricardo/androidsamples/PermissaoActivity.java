@@ -1,6 +1,8 @@
 package br.com.ricardo.androidsamples;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,38 +35,7 @@ public class PermissaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //Checa se já tem a premissão dada.
-                if(ContextCompat.checkSelfPermission(PermissaoActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED){
-
-                    //Caso seja a 2º vez, explica com um dialog porque é preciso esta permissão.
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(PermissaoActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)){
-
-                        AlertDialog.Builder alert = new AlertDialog.Builder(PermissaoActivity.this);
-                        alert.setTitle("Permissão");
-                        alert.setMessage("Precisamos da permissão READ_EXTERNAL_STORAGE para o correto funcionamento do aplicativo.");
-                        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //Caso o usuário entenda e dê a permissão, chama novamente o dialog de permissão.
-                                ActivityCompat.requestPermissions(PermissaoActivity.this, new String[]{
-                                        Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
-                            }
-                        });
-                        alert.show();
-
-                    } else {
-                        //caso contrário, se for a 1º vez, chama o dialog de permissão.
-                        ActivityCompat.requestPermissions(PermissaoActivity.this, new String[]{
-                                Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
-                    }
-                } else {
-                    //Chama o dialog de permissão pela 1º vez.
-                    ActivityCompat.requestPermissions(PermissaoActivity.this, new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
-                }
+                checkPermission(PermissaoActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
         });
 
@@ -73,45 +44,44 @@ public class PermissaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //Checa se já tem a premissão dada.
-                if(ContextCompat.checkSelfPermission(PermissaoActivity.this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED){
-
-                    //Caso seja a 2º vez, explica com um dialog porque é preciso esta permissão.
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(PermissaoActivity.this,
-                            Manifest.permission.CAMERA)){
-
-                        AlertDialog.Builder alert = new AlertDialog.Builder(PermissaoActivity.this);
-                        alert.setTitle("Permissão");
-                        alert.setMessage("Precisamos da permissão CAMERA para o correto funcionamento do aplicativo.");
-                        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //Caso o usuário entenda e dê a permissão, chama novamente o dialog de permissão.
-                                ActivityCompat.requestPermissions(PermissaoActivity.this, new String[]{
-                                        Manifest.permission.CAMERA}, PERMISSION_REQUEST);
-
-                            }
-                        });
-                        alert.show();
-
-                    } else {
-                        //caso contrário, se for a 1º vez, chama o dialog de permissão.
-                        ActivityCompat.requestPermissions(PermissaoActivity.this, new String[]{
-                                Manifest.permission.CAMERA}, PERMISSION_REQUEST);
-
-                    }
-                } else {
-                    //Chama o dialog de permissão pela 1º vez.
-                    ActivityCompat.requestPermissions(PermissaoActivity.this, new String[]{
-                            Manifest.permission.CAMERA}, PERMISSION_REQUEST);
-                }
+                checkPermission(PermissaoActivity.this, Manifest.permission.CAMERA);
             }
         });
     }
 
 
+    public void checkPermission(final Context context, final String permissao){
+
+        //Checa se já tem a premissão dada.
+        if(ContextCompat.checkSelfPermission(context, permissao) != PackageManager.PERMISSION_GRANTED){
+
+            //Caso seja a 2º vez, explica com um dialog porque é preciso esta permissão.
+            if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permissao)){
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Aviso");
+                alert.setMessage("Precisamos da permissão " + permissao + " para o correto funcionamento do aplicativo.");
+                alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //Caso o usuário entenda e dê a permissão, chama novamente o dialog de permissão.
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{permissao}, PERMISSION_REQUEST);
+                    }
+                });
+                alert.show();
+
+            } else {
+                //caso contrário, se for a 1º vez, chama o dialog de permissão.
+                ActivityCompat.requestPermissions((Activity) context, new String[]{permissao}, PERMISSION_REQUEST);
+            }
+        } else {
+            //Chama o dialog de permissão pela 1º vez.
+            ActivityCompat.requestPermissions((Activity) context, new String[]{permissao}, PERMISSION_REQUEST);
+        }
+
+
+    }
 
 
     
