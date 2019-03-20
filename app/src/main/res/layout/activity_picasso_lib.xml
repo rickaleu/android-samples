@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_picasso"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PicassoLib">
+
+    <Button
+        android:id="@+id/button_call_picasso"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="351dp"
+        android:text="mostrar imagem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_picasso" />
+
+    <ImageView
+        android:id="@+id/image_picasso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="27dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_call_picasso"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/picasso_avatar" />
+
+</android.support.constraint.ConstraintLayout>
