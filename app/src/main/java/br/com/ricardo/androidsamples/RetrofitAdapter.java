@@ -23,15 +23,9 @@ import br.com.ricardo.androidsamples.models.Instructor;
 public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.UdacityHolder> {
 
     private List<Course> courseList;
-    private OnItemClickListener mListener;
+    //Referência para o listener obtido no 'setOnClickListener'
+    private OnItemClickListener clickListener;
 
-    public interface OnItemClickListener{
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
-        mListener = listener;
-    }
 
     public RetrofitAdapter(List<Course> course) {
         this.courseList = course;
@@ -79,20 +73,20 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if(mListener != null){
-                        if(getAdapterPosition() != RecyclerView.NO_POSITION){
-                            mListener.onItemClick(getAdapterPosition());
-                        }
-                    }
+                    //Criando o evento de clique no item da lista e repassando o evento de volta para o listener
+                    clickListener.onItemClick(getAdapterPosition());
                 }
             });
         }
     }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
+    //Interface utilizada para criar o contrato entre Adapter/Activity
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+    //Método utilizado para comunicar o evento de clique de volta para a Activity
+    public void setOnItemClickListener(OnItemClickListener listener){
+        clickListener = listener;
     }
 
 }
