@@ -1,29 +1,33 @@
 package br.com.ricardo.androidsamples;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ricardo.androidsamples.models.Course;
 import br.com.ricardo.androidsamples.models.Instructor;
 import br.com.ricardo.androidsamples.models.UdacityCatalog;
+import br.com.ricardo.androidsamples.models.Course;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitActivity extends AppCompatActivity {
+public class RetrofitActivity extends AppCompatActivity{
 
     private static final String TAG = "Ricardo";
 
     private RecyclerView retrofitRecycler;
     private List<Course> courseList;
+    private List<Instructor> instructorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +51,11 @@ public class RetrofitActivity extends AppCompatActivity {
         //Criado uma instância da interface e atribuindo a ela toodo o conteúdo do atributo retrofit do tipo retrofit.
         UdacityService service = retrofit.create(UdacityService.class);
 
-        //Criando um objeto do tipo que vai receber a Call de UdacityCatalog e atribuindo a ela a chama do método da interface.
-        // Que também retorna uma Call de UdacityCatalog.
+        //Criando um objeto do tipo que vai receber a Call de GloboNews e atribuindo a ela a chama do método da interface.
+        // Que também retorna uma Call de GloboNews.
         Call<UdacityCatalog> requestCatalog = service.listCatalog();
 
-        //Pegando o objeto do tipo Call UdacityCatalog pra fazer uma requisição assíncrona.
+        //Pegando o objeto do tipo Call GloboNews pra fazer uma requisição assíncrona.
         //Após a chamada, ele vai retornar uma resposta (seja positiva ou negativa - onResponse) ou uma falha (onFailure).
         requestCatalog.enqueue(new Callback<UdacityCatalog>() {
             @Override
@@ -64,12 +68,14 @@ public class RetrofitActivity extends AppCompatActivity {
 
                     UdacityCatalog catalog = response.body();
                     courseList = new ArrayList<>();
+                    instructorList = new ArrayList<>();
 
                     for(Course c : catalog.courses){
-                        Log.i(TAG, String.format("%s: %s", c.title, c.subtitle));
-                        Log.i(TAG, "---------------------");
+                        courseList.add(new Course(c.title, c.subtitle, c.instructors));
 
-                        courseList.add(new Course(c.title, c.subtitle, null));
+                        for (Instructor i : c.instructors){
+                            instructorList.add(new Instructor(i.name, i.bio));
+                        }
                     }
 
                     RetrofitAdapter adapter = new RetrofitAdapter(courseList);

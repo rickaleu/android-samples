@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 
 public interface UdacityService {
 
-    public static final String BASE_URL = "https://www.udacity.com/public-api/v0/";
+    public static final String BASE_URL = "https://www.udacity.com/public-api/v1/";
 
     @GET("courses")
     Call<UdacityCatalog> listCatalog();
