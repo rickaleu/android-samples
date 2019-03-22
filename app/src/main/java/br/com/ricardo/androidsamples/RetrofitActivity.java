@@ -21,7 +21,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitActivity extends AppCompatActivity{
+public class RetrofitActivity extends AppCompatActivity implements RetrofitAdapter.OnItemClickListener {
 
     private static final String TAG = "Ricardo";
 
@@ -80,6 +80,7 @@ public class RetrofitActivity extends AppCompatActivity{
 
                     RetrofitAdapter adapter = new RetrofitAdapter(courseList);
                     retrofitRecycler.setAdapter(adapter);
+                    adapter.setOnItemClickListener(RetrofitActivity.this);
                 }
             }
 
@@ -89,5 +90,15 @@ public class RetrofitActivity extends AppCompatActivity{
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this, RetrofitActivity2.class);
+        Instructor instructorItem = instructorList.get(position);
+
+        intent.putExtra("NAME", instructorItem.name);
+        intent.putExtra("BIO", instructorItem.bio);
+        startActivity(intent);
     }
 }

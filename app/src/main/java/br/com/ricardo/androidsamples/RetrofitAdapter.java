@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ricardo.androidsamples.models.Course;
@@ -22,7 +23,15 @@ import br.com.ricardo.androidsamples.models.Instructor;
 public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.UdacityHolder> {
 
     private List<Course> courseList;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
 
     public RetrofitAdapter(List<Course> course) {
         this.courseList = course;
@@ -59,8 +68,6 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
 
         private TextView courseTitle;
         private TextView courseSubtitle;
-        private TextView instructorName;
-        private LinearLayout udacityContainer;
 
 
         public UdacityHolder(@NonNull final View itemView) {
@@ -68,22 +75,18 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
 
             courseTitle = (TextView) itemView.findViewById(R.id.udacity_title);
             courseSubtitle = (TextView) itemView.findViewById(R.id.udacity_subtitle);
-            instructorName = (TextView) itemView.findViewById(R.id.udacity_instructor_name);
-            udacityContainer = (LinearLayout) itemView.findViewById(R.id.udacity_item_container);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    Instructor instructor = new Instructor();
-                    Intent intent = new Intent(v.getContext(), RetrofitActivity2.class);
-                    intent.putExtra("instructorName", instructor.name);
-                    intent.putExtra("instructorBio", instructor.bio);
-                    ((AppCompatActivity)v.getContext()).startActivityForResult(intent, 0);
-
+                    if(mListener != null){
+                        if(getAdapterPosition() != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(getAdapterPosition());
+                        }
+                    }
                 }
             });
-
         }
     }
 
