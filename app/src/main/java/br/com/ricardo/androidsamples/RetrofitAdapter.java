@@ -23,6 +23,8 @@ import br.com.ricardo.androidsamples.models.Instructor;
 public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.UdacityHolder> {
 
     private List<Course> courseList;
+    private List<Instructor> instructorList;
+
     //Referência para o listener obtido no 'setOnClickListener'
     private OnItemClickListener clickListener;
 
@@ -50,6 +52,15 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
         udacityHolder.courseTitle.setText(c.title);
         udacityHolder.courseSubtitle.setText(c.subtitle);
 
+
+        StringBuilder totalNames = new StringBuilder();
+        for(Instructor names: c.instructors){
+            totalNames.append(names.name);
+            totalNames.append(", ");
+
+        }
+        udacityHolder.instructorName.setText(totalNames.toString());
+
     }
 
     @Override
@@ -62,6 +73,7 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
 
         private TextView courseTitle;
         private TextView courseSubtitle;
+        private TextView instructorName;
 
 
         public UdacityHolder(@NonNull final View itemView) {
@@ -69,6 +81,7 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
 
             courseTitle = (TextView) itemView.findViewById(R.id.udacity_title);
             courseSubtitle = (TextView) itemView.findViewById(R.id.udacity_subtitle);
+            instructorName = (TextView) itemView.findViewById(R.id.udacity_instructor_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
