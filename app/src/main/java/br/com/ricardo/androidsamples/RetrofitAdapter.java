@@ -59,6 +59,9 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
             totalNames.append(", ");
 
         }
+
+        totalNames = totalNames.replace(0, totalNames.length() - 1, " ");
+
         udacityHolder.instructorName.setText(totalNames.toString());
 
     }
