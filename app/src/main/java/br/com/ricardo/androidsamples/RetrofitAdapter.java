@@ -48,7 +48,6 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
     public void onBindViewHolder(@NonNull RetrofitAdapter.UdacityHolder udacityHolder, int i) {
 
         Course c = courseList.get(i);
-
         udacityHolder.courseTitle.setText(c.title);
         udacityHolder.courseSubtitle.setText(c.subtitle);
 
@@ -57,12 +56,9 @@ public class RetrofitAdapter extends RecyclerView.Adapter<RetrofitAdapter.Udacit
         for(Instructor names: c.instructors){
             totalNames.append(names.name);
             totalNames.append(", ");
-
         }
 
-        totalNames = totalNames.replace(0, totalNames.length() - 1, " ");
-
-        udacityHolder.instructorName.setText(totalNames.toString());
+        udacityHolder.instructorName.setText(totalNames);
 
     }
 
