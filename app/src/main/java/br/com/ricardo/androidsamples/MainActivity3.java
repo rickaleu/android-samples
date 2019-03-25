@@ -33,30 +33,33 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Método que verifica se é uma versão acima do Oreo.
                 createNotificationChannel();
 
-                String msg = editNotification.getText().toString();
-
+                //Intent com putExtra pra mandar o valor do campo digitado para a outra activity.
                 Intent intent = new Intent(MainActivity3.this, NotificationActivity.class);
-                intent.putExtra("MENSAGEM", msg);
+                intent.putExtra("MENSAGEM", editNotification.getText().toString());
 
+                //PendingIntent serve para criar um token da notificação para que ela seja executada.
                 PendingIntent pi = PendingIntent.getActivity(getBaseContext(), 001,
                         intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                //Montando a notificação.
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity3.this, "Personal Notification");
                 builder.setSmallIcon(R.drawable.ic_menu_gallery);
                 builder.setContentTitle("Mensagem");
-                builder.setContentText(msg);
-                builder.setPriority(0);
+                builder.setContentText(editNotification.getText().toString());
                 builder.setContentIntent(pi);
 
-                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MainActivity3.this);
-                notificationManagerCompat.notify(001, builder.build());
+                //Gerenciador de notificações. que vai ser responsável por exibir a notificação pro usuário.
+                NotificationManagerCompat nmc = NotificationManagerCompat.from(MainActivity3.this);
+                nmc.notify(001, builder.build());
 
             }
         });
     }
 
+    //Método que verifica se é uma versão acima do Oreo.
     public void createNotificationChannel(){
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
