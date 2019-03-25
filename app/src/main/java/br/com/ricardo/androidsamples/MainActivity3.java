@@ -1,17 +1,21 @@
 package br.com.ricardo.androidsamples;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity3 extends AppCompatActivity {
 
@@ -29,25 +33,45 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                createNotificationChannel();
+
                 String msg = editNotification.getText().toString();
 
                 Intent intent = new Intent(MainActivity3.this, NotificationActivity.class);
                 intent.putExtra("MENSAGEM", msg);
 
-                int id = (int) (Math.random()*1000);
-                PendingIntent pi = PendingIntent.getActivity(getBaseContext(),
-                        id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pi = PendingIntent.getActivity(getBaseContext(), 001,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                Notification notification = new Notification.Builder(getBaseContext())
-                        .setContentTitle("De: Ricardo Sousa")
-                        .setContentText(msg).setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentIntent(pi).build();
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity3.this, "Personal Notification");
+                builder.setSmallIcon(R.drawable.ic_menu_gallery);
+                builder.setContentTitle("Mensagem");
+                builder.setContentText(msg);
+                builder.setPriority(0);
+                builder.setContentIntent(pi);
 
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notification.flags = Notification.FLAG_AUTO_CANCEL;
-                notificationManager.notify(id, notification);
+                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MainActivity3.this);
+                notificationManagerCompat.notify(001, builder.build());
 
             }
         });
+    }
+
+    public void createNotificationChannel(){
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            CharSequence name = "Personal Notification";
+            String description = "Include all the personal notifications";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel = new NotificationChannel("Personal Notification", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+        }
+
     }
 }
