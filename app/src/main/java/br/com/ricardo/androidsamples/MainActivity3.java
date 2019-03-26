@@ -5,6 +5,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -12,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +24,10 @@ import android.widget.Toast;
 public class MainActivity3 extends AppCompatActivity {
 
     private EditText editNotification;
+    private EditText editProgramarNotification;
     private Button buttonNotification;
+    private Button buttonProgramarNotification;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +35,10 @@ public class MainActivity3 extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
 
         editNotification = (EditText) findViewById(R.id.edit_notification);
+        editProgramarNotification = (EditText) findViewById(R.id.edit_programar_notification);
         buttonNotification = (Button) findViewById(R.id.button_notification);
+        buttonProgramarNotification = (Button) findViewById(R.id.button_programar_notification);
+
         buttonNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +67,32 @@ public class MainActivity3 extends AppCompatActivity {
 
             }
         });
+
+
+
+        buttonProgramarNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Criando uma instancia da classe ComponentName pra dizer qual é o nome do serviço, chamando a classe ServicoAlarme.
+                ComponentName serviceName = new ComponentName(MainActivity3.this, ServicoAlarme.class);
+
+                //Montando as informações do Job.
+                JobInfo jobInfo = new JobInfo.Builder(0, serviceName)
+                        .setMinimumLatency(Integer.parseInt(editProgramarNotification.getText().toString()))
+                        .build();
+
+                //Agendando o Job.
+                JobScheduler scheduler = (JobScheduler) getBaseContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                int result = scheduler.schedule(jobInfo);
+
+                if(result == JobScheduler.RESULT_SUCCESS){
+                    Log.d("MainActivity3", "Serviço agendadíssimo!");
+                }
+
+            }
+        });
+
     }
 
     //Método que verifica se é uma versão acima do Oreo.

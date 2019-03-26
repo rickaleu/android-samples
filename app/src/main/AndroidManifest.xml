@@ -29,6 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".ServicoAlarme"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+
+
         <activity android:name=".RetrofitActivity2" />
         <activity android:name=".RetrofitActivity">
             <intent-filter>
