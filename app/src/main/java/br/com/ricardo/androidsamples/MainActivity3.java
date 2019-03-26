@@ -7,32 +7,69 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity3 extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity3";
 
     private EditText editNotification;
     private EditText editProgramarNotification;
     private Button buttonNotification;
     private Button buttonProgramarNotification;
 
+    private BroadcastReceiver broadcastReceiver;
+    private TextView textProgresso;
+    private ProgressBar progressProgresso;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
+
+        textProgresso = (TextView) findViewById(R.id.text_mensagem);
+
+        progressProgresso = (ProgressBar) findViewById(R.id.progressBar_progresso);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                progressProgresso.setVisibility(progressProgresso.GONE);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+                boolean enviado = sharedPreferences.getBoolean("enviado", false);
+                if(enviado){
+                    textProgresso.setText("O Token foi gerado e enviado ao servidor.");
+                } else {
+                    textProgresso.setText("Um erro aconteceu ao gerar o token.");
+                }
+
+            }
+        };
+
+        Intent intent = new Intent(this, RegistroIntentServices.class);
+        startService(intent);
+
 
         editNotification = (EditText) findViewById(R.id.edit_notification);
         editProgramarNotification = (EditText) findViewById(R.id.edit_programar_notification);
@@ -111,6 +148,19 @@ public class MainActivity3 extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
 
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter("registrationComplete"));
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 }

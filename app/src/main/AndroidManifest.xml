@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -33,6 +35,26 @@
         <service android:name=".ServicoAlarme"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true"/>
+
+        <service android:name=".RegistroIntentServices"
+            android:exported="false"/>
+
+        <service android:name=".PushListenerService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVER"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="gcm.play.android.samples.com.gcmquickstart"/>
+            </intent-filter>
+        </receiver>
 
 
         <activity android:name=".RetrofitActivity2" />
