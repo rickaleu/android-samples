@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 public class Splash extends AppCompatActivity {
 
-    public final int TEXT_MINUTES = 2000;
+    public final int TEXT_MINUTES = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
